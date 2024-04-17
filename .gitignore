@@ -1,6 +1,7 @@
 .htaccess
-.project
+.nbproject
 .buildpath
 .settings
 .DS_Store
 ._*
+/nbproject/

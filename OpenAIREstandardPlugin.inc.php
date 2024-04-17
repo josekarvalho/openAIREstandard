@@ -1,31 +1,31 @@
 <?php
 
 /**
- * @file plugins/generic/openAIRE/OpenAIREPlugin.inc.php
+ * @file plugins/generic/openAIREstandard/OpenAIREstandardPlugin.inc.php
  *
  * Copyright (c) 2014-2020 Simon Fraser University
  * Copyright (c) 2003-2020 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class OpenAIREPlugin
- * @ingroup plugins_generic_openAIRE
+ * @ingroup plugins_generic_openAIREstandard
  *
- * @brief OpenAIRE plugin class
+ * @brief OpenAIREstandard plugin class
  */
 
 import('lib.pkp.classes.plugins.GenericPlugin');
 
-class OpenAIREPlugin extends GenericPlugin {
+class OpenAIREstandardPlugin extends GenericPlugin {
 	/**
 	 * @copydoc Plugin::register()
 	 */
 	function register($category, $path, $mainContextId = null) {
 		$success = parent::register($category, $path, $mainContextId);
 		if ($success && $this->getEnabled($mainContextId)) {
-			$this->import('OAIMetadataFormatPlugin_OpenAIRE');
-			PluginRegistry::register('oaiMetadataFormats', new OAIMetadataFormatPlugin_OpenAIRE($this), $this->getPluginPath());
-			$this->import('OpenAIREGatewayPlugin');
-			PluginRegistry::register('gateways', new OpenAIREGatewayPlugin($this), $this->getPluginPath());
+			$this->import('OAIMetadataFormatPlugin_OpenAIREstandard');
+			PluginRegistry::register('oaiMetadataFormats', new OAIMetadataFormatPlugin_OpenAIREstandard($this), $this->getPluginPath());
+			$this->import('OpenAIREstandardGatewayPlugin');
+			PluginRegistry::register('gateways', new OpenAIREstandardGatewayPlugin($this), $this->getPluginPath());
 
 			# Handle COAR resource types in section forms
 			HookRegistry::register('sectiondao::getAdditionalFieldNames', array($this, 'addSectionDAOFieldNames'));			
@@ -43,14 +43,14 @@ class OpenAIREPlugin extends GenericPlugin {
 	 * @copydoc Plugin::getDisplayName()
 	 */
 	function getDisplayName() {
-		return __('plugins.generic.openAIRE.displayName');
+		return __('plugins.generic.openAIREstandard.displayName');
 	}
 
 	/**
 	 * @copydoc Plugin::getDescription()
 	 */
 	function getDescription() {
-		return __('plugins.generic.openAIRE.description');
+		return __('plugins.generic.openAIREstandard.description');
 	}
 
 	/**

@@ -1,26 +1,26 @@
 <?php
 
 /**
- * @file OpenAIREGatewayPlugin.inc.php
+ * @file OpenAIREstandardGatewayPlugin.inc.php
  *
  * Copyright (c) 2014-2020 Simon Fraser University
  * Copyright (c) 2003-2020 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class OpenAIREGateway
- * @ingroup plugins_gateways_OpenAIREGateway
+ * @ingroup plugins_gateways_OpenAIREstandardGateway
  *
- * @brief OpenAIREGateway plugin
+ * @brief OpenAIREstandardGateway plugin
  */
 
 import('lib.pkp.classes.plugins.GatewayPlugin');
 
-class OpenAIREGatewayPlugin extends GatewayPlugin {
+class OpenAIREstandardGatewayPlugin extends GatewayPlugin {
 	protected $_parentPlugin;
 	
 	/**
 	 * Constructor
-	 * @param $parentPlugin OpenAIREPlugin
+	 * @param $parentPlugin OpenAIREstandardPlugin
 	 */
 	function __construct($parentPlugin) {
 		$this->_parentPlugin = $parentPlugin;
@@ -28,15 +28,15 @@ class OpenAIREGatewayPlugin extends GatewayPlugin {
 	}
 
 	function getName() {
-		return 'OpenAIREGatewayPlugin';
+		return 'OpenAIREstandardGatewayPlugin';
 	}
 
 	function getDisplayName() {
-		return __('plugins.generic.openAIRE.gateway.displayName');
+		return __('plugins.generic.openAIREstandard.gateway.displayName');
 	}
 
 	function getDescription() {
-		return __('plugins.generic.openAIRE.gateway.description');
+		return __('plugins.generic.openAIREstandard.gateway.description');
 	}
 
 	public function getPluginPath() {
