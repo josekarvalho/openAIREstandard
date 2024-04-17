@@ -1,31 +1,31 @@
 <?php
 
 /**
- * @file OpenAIREGatewayPlugin.php
+ * @file OpenAIREstandardGatewayPlugin.inc.php
  *
- * Copyright (c) 2014-2023 Simon Fraser University
- * Copyright (c) 2003-2023 John Willinsky
+ * Copyright (c) 2014-2024 Simon Fraser University
+ * Copyright (c) 2003-2024 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class OpenAIREGateway
- * @ingroup plugins_gateways_OpenAIREGateway
+ * @ingroup plugins_gateways_OpenAIREstandardGateway
  *
- * @brief OpenAIREGateway plugin
+ * @brief OpenAIREstandardGateway plugin
  */
 
-namespace APP\plugins\generic\openAIRE;
+namespace APP\plugins\generic\openAIREstandard;
 
 use APP\journal\JournalDAO;
 use PKP\db\DAORegistry;
 use PKP\core\PKPString;
 use PKP\plugins\GatewayPlugin;
 
-class OpenAIREGatewayPlugin extends GatewayPlugin {
+class OpenAIREstandardGatewayPlugin extends GatewayPlugin {
 	protected $_parentPlugin;
 	
 	/**
 	 * Constructor
-	 * @param $parentPlugin OpenAIREPlugin
+	 * @param $parentPlugin OpenAIREstandardPlugin
 	 */
 	function __construct($parentPlugin) {
 		$this->_parentPlugin = $parentPlugin;
@@ -33,15 +33,15 @@ class OpenAIREGatewayPlugin extends GatewayPlugin {
 	}
 
 	function getName() {
-		return 'OpenAIREGatewayPlugin';
+		return 'OpenAIREstandardGatewayPlugin';
 	}
 
 	function getDisplayName() {
-		return __('plugins.generic.openAIRE.gateway.displayName');
+		return __('plugins.generic.openAIREstandard.gateway.displayName');
 	}
 
 	function getDescription() {
-		return __('plugins.generic.openAIRE.gateway.description');
+		return __('plugins.generic.openAIREstandard.gateway.description');
 	}
 
 	public function getPluginPath() {
@@ -64,8 +64,8 @@ class OpenAIREGatewayPlugin extends GatewayPlugin {
 			return false;
 		}
 
-		$type = array_shift($args);
-		switch ($type) {
+		$scheme = array_shift($args);
+		switch ($scheme) {
 			case 'objects':
 				$this->showObjects();
 				break;
@@ -74,15 +74,16 @@ class OpenAIREGatewayPlugin extends GatewayPlugin {
 		// Failure.
 		header('HTTP/1.0 404 Not Found');
 		$templateMgr = TemplateManager::getManager($request);
+		AppLocale::requireComponents(LOCALE_COMPONENT_APP_COMMON);
 		$templateMgr->assign('message', 'plugins.generic.openAIRE.gateway.errorMessage');
 		$templateMgr->display('frontend/pages/message.tpl');
 		exit;
 	}
 
 	function showObjects() {
-        $journalDao = DAORegistry::getDAO('JournalDAO'); /** @var JournalDAO $journalDao */
-        $journals = $journalDao->getAll(true);
-
+		$journalDao = DAORegistry::getDAO('JournalDAO');
+		$issueDao = DAORegistry::getDAO('IssueDAO');
+		$journals = $journalDao->getAll(true);
 		$request = $this->getRequest();
 		$dispatcher = $request->getDispatcher();
 		header('content-type: text/plain');

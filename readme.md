@@ -17,6 +17,9 @@ PHP 7.0 or greater.
 
 Version History
 ---------------
+### Version 3.4.0.0
+
+Support for OJS 3.4.0
 
 ### Version 3.2.1.0
 
