@@ -3,15 +3,15 @@
 /**
  * @file OAIMetadataFormatPlugin_OpenAIREstandard.inc.php
  *
- * Copyright (c) 2014-2020 Simon Fraser University
- * Copyright (c) 2003-2020 John Willinsky
+ * Copyright (c) 2014-2024 Simon Fraser University
+ * Copyright (c) 2003-2024 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
- * @class OAIMetadataFormatPlugin_OpenAIRE
+ * @class OAIMetadataFormatPlugin_OpenAIREstandard
  * @ingroup oai_format_openaire
  * @see OAI
  *
- * @brief OAI JATS XML format plugin for OpenAIRE.
+ * @brief OAI OPENAIRE XML format plugin for OpenAIRE.
  */
 import('lib.pkp.classes.plugins.OAIMetadataFormatPlugin');
 import('plugins.generic.openAIREstandard.OAIMetadataFormat_OpenAIREstandard');
