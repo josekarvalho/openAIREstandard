@@ -4,7 +4,7 @@ About
 -----
 The plugin is based mainly on the plugin https://github.com/ojsde/openAIRE.
 
-It is an alternation of the XML generator of the plugin and creating now metadata_prefix "oai_openaire". Now it completly fullfills the guideline v4 for literature from OpenAIRE https://openaire-guidelines-for-literature-repository-managers.readthedocs.io/en/v4.0.0/application_profile.html. You can use validator for this XML. It follows the OpenAIRE XSD rules and can be scaled by this rules more: https://github.com/openaire/guidelines-literature-repositories/tree/master/schemas/4.0
+It is an alternation of the XML generator of the plugin and creates new metadataPrefix "oai_openaire". Now it completly fullfills the guideline v4 for literature from OpenAIRE https://openaire-guidelines-for-literature-repository-managers.readthedocs.io/en/v4.0.0/application_profile.html. You can use validator for this XML. It follows the OpenAIRE XSD rules and can be scaled by this rules more: https://github.com/openaire/guidelines-literature-repositories/tree/master/schemas/4.0
 
 License
 -------
