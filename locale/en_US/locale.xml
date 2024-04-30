@@ -20,5 +20,6 @@
 
   <message key="plugins.generic.openAIREstandard.resourceType.title">Type of articles published in this section</message>
   <message key="plugins.generic.openAIREstandard.resourceType.description"><![CDATA[For better OpenAIRE compliance, uses COAR Resource Type Genres <a target="_new" href="http://vocabularies.coar-repositories.org/documentation/resource_types/2.0.draft/">http://vocabularies.coar-repositories.org/documentation/resource_types/2.0.draft/</a>]]></message>
-  
+  <message key="plugins.generic.openAIREstandard.audience.title">Choose Audience</message>
+  <message key="plugins.generic.openAIREstandard.audience.description"><![CDATA[A class of entity may be determined by the creator or the publisher or by a third party. An example of audiences given is derived from the <a target="_new" href="https://ceds.ed.gov/element/001492">Common Education Data Standards vocabulary</a>. Please note the list is not exhaustive.]]></message>
 </locale>
