@@ -72,7 +72,12 @@ class OpenAIREstandardPlugin extends GenericPlugin {
                     'multilingual' => false,
                     'validation' => ['nullable']
         ];
-
+        $schema->properties->audience = (object) [
+                    'type' => 'string',
+                    'apiSummary' => true,
+                    'multilingual' => false,
+                    'validation' => ['nullable']
+        ];
         return false;
     }
 
@@ -94,6 +99,7 @@ class OpenAIREstandardPlugin extends GenericPlugin {
         $smarty = & $args[1];
         $output = & $args[2];
         $smarty->assign('resourceTypeOptions', $this->_getResourceTypeOptions());
+        $smarty->assign('audienceOptions', $this->_getAudienceOptions());
         $output .= $smarty->fetch($this->getTemplateResource('controllers/grids/settings/section/form/sectionFormAdditionalFields.tpl'));
         return false;
     }
@@ -114,6 +120,7 @@ class OpenAIREstandardPlugin extends GenericPlugin {
         $section = Repo::section()->get($sectionForm->getSectionId());
         if ($section) {
             $sectionForm->setData('resourceType', $section->getData('resourceType'));
+            $sectionForm->setData('audience', $section->getData('audience'));
         }
     }
 
@@ -130,6 +137,7 @@ class OpenAIREstandardPlugin extends GenericPlugin {
         $sectionForm = & $args[0];
         $request = Application::get()->getRequest();
         $sectionForm->setData('resourceType', $request->getUserVar('resourceType'));
+        $sectionForm->setData('audience', $request->getUserVar('audience'));
     }
 
     /**
@@ -145,6 +153,7 @@ class OpenAIREstandardPlugin extends GenericPlugin {
         if (!empty($resourceType)) {
             $section = Repo::section()->get($sectionForm->getSectionId());
             $section->setData('resourceType', $resourceType);
+            $section->setData('audience', $audience);
             Repo::section()->edit($section, []);
         }
     }
@@ -194,4 +203,29 @@ class OpenAIREstandardPlugin extends GenericPlugin {
         return $resourceTypeOptions;
     }
 
+    /**
+     * Get an array of Audience tapes for select element
+     * (Includes default '' => "Choose One" string.)
+     * @return array resourceTypeUri => resourceTypeLabel
+     */
+    function _getAudienceOptions() {
+        $audience = array(
+            '' => __('common.chooseOne'),
+            'Administrators' => 'Administrators',
+            'Community Groups' => 'Community Groups',
+            'Counsellors' => 'Counsellors',
+            'Federal Funds Recipients and Applicants' => 'Federal Funds Recipients and Applicants',
+            'Librarians' => 'Librarians',
+            'News Media' => 'News Media',
+            'Other' => 'Other',
+            'Parents and Families' => 'Parents and Families',
+            'Policymakers' => 'Policymakers',
+            'Researchers' => 'Researchers',
+            'School Support Staff' => 'School Support Staff',
+            'Student Financial Aid Providers' => 'Student Financial Aid Providers',
+            'Students' => 'Students',
+            'Teachers' => 'Teachers'
+        );
+        return $audience;
+    }
 }

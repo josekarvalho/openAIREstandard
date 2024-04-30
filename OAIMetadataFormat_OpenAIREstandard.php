@@ -54,6 +54,7 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
         $articleDoi = $article->getStoredPubId('doi');
         $accessRights = $this->_getAccessRights($journal, $issue, $article);
         $resourceType = ($section->getData('resourceType') ? $section->getData('resourceType') : 'http://purl.org/coar/resource_type/c_6501'); # COAR resource type URI, defaults to "journal article"
+        $audience = $section->getData('audience');
         if (!$datePublished)
             $datePublished = $issue->getDatePublished();
         if ($datePublished)
@@ -61,8 +62,6 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
         $parentPlugin = PluginRegistry::getPlugin('generic', 'openairestandardplugin');
 
         //resource - defining schemas and namespaces
-        //$response = "<resource xmlns:xs =\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:datacite=\"http://datacite.org/schema/kernel-4\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:vc=\"http://www.w3.org/2007/XMLSchema-versioning\" xmlns=\"http://namespace.openaire.eu/schema/oaire/\" xsi:schemaLocation=\"http://namespace.openaire.eu/schema/oaire/ https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd\">\n";
-
         $response = "<resource xmlns=\"http://namespace.openaire.eu/schema/oaire/\" xmlns:rdf=\"http://www.w3.org/TR/rdf-concepts/\" xmlns:doc=\"http://www.lyncode.com/xoai\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:oaire=\"http://namespace.openaire.eu/schema/oaire/\" xmlns:datacite=\"http://datacite.org/schema/kernel-4\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:vc=\"http://www.w3.org/2007/XMLSchema-versioning\" xsi:schemaLocation=\"http://namespace.openaire.eu/schema/oaire/ https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd\">\n";
 
         //1. Title (M) - Translated article titles
@@ -101,7 +100,7 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
 
         //4. Funding Reference (MA) - Fetch funding data from other plugins if available - TODO
         $fundingReferences = null;
-        Hook::call('OAIMetadataFormat_OpenAIRE::findFunders', [&$articleId, &$fundingReferences]);
+        Hook::call('OAIMetadataFormat_OpenAIREStandard::findFunders', [&$articleId, &$fundingReferences]);
         if ($fundingReferences) {
             $response .= $fundingReferences;
         }
@@ -229,18 +228,23 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
             $response .= "<oaire:licenseCondition startDate=\"" . strftime('%Y-%m-%d', $openAccessDate) . "\" uri=\"" . htmlspecialchars($licenseUrl) . "\">" . strip_tags($ccLabel) . "</oaire:licenseCondition>\n";
         }
 
+        //19. Coverage (R)
+        if ($article->getCoverage($articleLocale)) {
+            $response .= "<dc:coverage>" . htmlspecialchars($article->getCoverage($articleLocale)) . "</dc:coverage>\n";
+        }
+        
         //20. Size (O) - gallyes file sizes + page count		
         $pageInfo = $this->_getPageInfo($article);
 //        if ($galleys || $pageInfo) {
         if($pageInfo) {
-            $response .= "<datacite.sizes>\n";
+            $response .= "<datacite:sizes>\n";
             $response .= ($pageInfo ? "<datacite:size>" . (int) $pageInfo['pagecount'] . " Pages</datacite:size>\n" : '');
 //            foreach ($galleys as $galley) {
 //                if ($galley->getFile()) {
 //                    $response .= "<datacite:size>" . round($galley->getFile()->getFileSize() / 1024 / 1024, 2) . " MB</datacite:size>\n";
 //                }
 //            }
-            $response .= "</datacite.sizes>\n";
+            $response .= "</datacite:sizes>\n";
         }
 
         //23. File Location (MA) - full text links
@@ -279,9 +283,15 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
 
         //27. Citation Start Page (R) + 28. Citation End Page (R) - Page info, if available and parseable.
         if ($pageInfo) {
-            $response .= "<oaire:citationStartPag>" . $pageInfo['fpage'] . "</oaire:citationStartPag>\n"
+            $response .= "<oaire:citationStartPage>" . $pageInfo['fpage'] . "</oaire:citationStartPage>\n"
                     . "<oaire:citationEndPage>" . $pageInfo['lpage'] . "</oaire:citationEndPage>\n";
         }
+        
+        //32. Audience (O)
+        if ($audience) {
+            $response .= "<dcterms:audience>" . htmlspecialchars($audience) . "</dcterms:audience>\n";
+        }        
+        
         $response .= "</resource>\n";
 
         return $response;
