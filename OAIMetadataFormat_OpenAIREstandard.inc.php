@@ -47,7 +47,7 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
             $datePublished = strtotime($datePublished);
         $parentPlugin = PluginRegistry::getPlugin('generic', 'openairestandardplugin');
 
-        $response = "<resource xmlns=\"http://namespace.openaire.eu/schema/oaire/\" xmlns:rdf=\"http://www.w3.org/TR/rdf-concepts/\" xmlns:doc=\"http://www.lyncode.com/xoai\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:oaire=\"http://namespace.openaire.eu/schema/oaire/\" xmlns:datacite=\"http://datacite.org/schema/kernel-4\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:vc=\"http://www.w3.org/2007/XMLSchema-versioning\" xsi:schemaLocation=\"http://namespace.openaire.eu/schema/oaire/ https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd\">\n";
+        $response = "<resource xmlns=\"http://namespace.openaire.eu/schema/oaire/\" xmlns:rdf=\"http://www.w3.org/TR/rdf-concepts/\" xmlns:doc=\"http://www.lyncode.com/xoai\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:oaire=\"http://namespace.openaire.eu/schema/oaire/\" xmlns:datacite=\"http://datacite.org/schema/kernel-4\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:vc=\"http://www.w3.org/2007/XMLSchema-versioning\"  xsi:schemaLocation=\"http://namespace.openaire.eu/schema/oaire/ https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd\"> \n";
                 
         //1. Title (M) - Translated article titles
         $response .= "<datacite:titles>\n"
@@ -75,11 +75,11 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
         foreach ($article->getAuthors() as $author) {
             $affiliation = $author->getLocalizedAffiliation();
             $response .= "<datacite:creator>\n" .
-                    "<datacite:creatorName nameType=\"personal\">" . htmlspecialchars((method_exists($author, 'getLastName') ? $author->getLastName() : $author->getLocalizedFamilyName()) . ", " . (method_exists($author, 'getFirstName') ? $author->getFirstName() : $author->getLocalizedGivenName()) . (((method_exists($author, 'getMiddleName') && $s = $author->getMiddleName()) != '') ? " $s" : '')) . "</datacite:creatorName>\n" .
+                    "<datacite:creatorName nameType=\"Personal\">" . htmlspecialchars((method_exists($author, 'getLastName') ? $author->getLastName() : $author->getLocalizedFamilyName()) . ", " . (method_exists($author, 'getFirstName') ? $author->getFirstName() : $author->getLocalizedGivenName()) . (((method_exists($author, 'getMiddleName') && $s = $author->getMiddleName()) != '') ? " $s" : '')) . "</datacite:creatorName>\n" .
                     "<datacite:givenName>" . htmlspecialchars(method_exists($author, 'getFirstName') ? $author->getFirstName() : $author->getLocalizedGivenName()) . (((method_exists($author, 'getMiddleName') && $s = $author->getMiddleName()) != '') ? " $s" : '') . "</datacite:givenName>\n" .
                     "<datacite:familyName>" . htmlspecialchars(method_exists($author, 'getLastName') ? $author->getLastName() : $author->getLocalizedFamilyName()) . "</datacite:familyName>\n" .
-                    ($affiliation ? "<datacite:affiliation>" . htmlspecialchars($affiliation) . "</datacite:affiliation>\n" : '') .
                     ($author->getOrcid() ? "<datacite:nameIdentifier nameIdentifierScheme=\"ORCID\" schemeURI=\"http://orcid.org\">" . htmlspecialchars($author->getOrcid()) . "</datacite:nameIdentifier>\n" : '') .
+                    ($affiliation ? "<datacite:affiliation>" . htmlspecialchars($affiliation) . "</datacite:affiliation>\n" : '') .
                     "</datacite:creator>\n";
         }
         $response .= "</datacite:creators>\n";
@@ -162,7 +162,7 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
         $coarAccessRights = $this->_getCoarAccessRights();
 
         if ($accessRights) {
-            $response .= "<datacite:rights identifierType=\"" . $coarAccessRights[$accessRights]['url'] . "\">" . $coarAccessRights[$accessRights]['label'] . "</datacite:rights>\n";
+            $response .= "<datacite:rights rightsURI=\"" . $coarAccessRights[$accessRights]['url'] . "\">" . $coarAccessRights[$accessRights]['label'] . "</datacite:rights>\n";
         }
 
         //17. Subject (MA) - subjects + keywords                
