@@ -23,7 +23,7 @@ class OAIMetadataFormat_OpenAIREstandard extends OAIMetadataFormat {
      * @see OAIMetadataFormat#toXml
      */
     function toXml($record, $format = null) {
-        $request = Application::getRequest();
+        $request = Application::get()->getRequest();
         $article = $record->getData('article');
         $journal = $record->getData('journal');
         $section = $record->getData('section');
