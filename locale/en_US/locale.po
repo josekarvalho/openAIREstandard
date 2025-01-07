@@ -23,7 +23,7 @@ msgstr "OpenAIRE Standard Metadata Format"
 msgid "plugins.oaiMetadata.openAIREstandard.description" 
 msgstr "Structures metadata in a way that is consistent with the OpenAIRE Guidelines for Literature Repository Managers v4."
 
-msgid "plugins.generic.openAIREstandard.resourceType.titl" 
+msgid "plugins.generic.openAIREstandard.resourceType.title" 
 msgstr "Type of articles published in this section"
 
 msgid "plugins.generic.openAIREstandard.resourceType.description" 
